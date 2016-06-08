@@ -1,0 +1,37 @@
+#
+# TriTrypDB OrganismDB package settings
+#
+
+# Organism
+genus       : 'Leishmania'
+species     : 'braziliensis'
+tax_id      : '420245'
+description : 'L. braziliensis MHOM/BR/75/M2904'
+
+# Package names
+orgdb_name      : 'org.LbrM.tritryp.db'
+txdb_name       : 'TxDb.LbraziliensisMHOMBR75M2904.tritryp27.genes'
+organismdb_name : 'Leishmania.braziliensis.MHOMBR75M2904'
+
+# Annotation file sources
+# If not specified, or files do not exists, will attempt to download
+gff     : '/cbcb/lab/nelsayed/ref_data/lbraziliensis/annotation/TriTrypDB-27_LbraziliensisMHOMBR75M2904.gff'
+txt     : '/cbcb/lab/nelsayed/ref_data/lbraziliensis/annotation/TriTrypDB-27_LbraziliensisMHOMBR75M2904Gene.txt.gz'
+aliases : '/cbcb/lab/nelsayed/ref_data/lbraziliensis/annotation/TriTrypDB-27_LbraziliensisMHOMBR75M2904_GeneAliases.txt'
+
+# GFF feature type to include in TxDb
+gff_txname : 'gene'
+
+# Author
+author     : "Keith Hughitt <khughitt@umd.edu>"
+maintainer : "Keith Hughitt <khughitt@umd.edu>"
+
+# EuPathDB version
+db_name    : 'TriTrypDB'
+db_version : '27'
+db_url     : 'http://tritrypdb.org/tritrypdb/'
+
+# Directories
+build_dir  : 'build'
+output_dir : 'output'
+

@@ -1,0 +1,35 @@
+#
+# EuPathDB OrganismDB package settings
+#
+
+# Organism
+genus       : 'Toxoplasma'
+species     : 'gondii'
+tax_id      : '508771'
+description : 'T. gondii strain ME49'
+
+
+# Package names
+orgdb_name      : 'org.TGME49.toxo.db'
+txdb_name       : 'TxDb.TgondiiME49.toxo27.genes'
+organismdb_name : 'Toxoplasma.gondii.ME49'
+
+# Annotation file sources
+# If not specified, or files do not exists, will attempt to download
+gff     : '/cbcb/lab/nelsayed/ref_data/tgondii_me49/annotation/ToxoDB-27_TgondiiME49.gff'
+txt     : '/cbcb/lab/nelsayed/ref_data/tgondii_me49/annotation/ToxoDB-27_TgondiiME49Gene.txt.gz'
+aliases : '/cbcb/lab/nelsayed/ref_data/tgondii_me49/annotation/ToxoDB-27_TgondiiME49_GeneAliases.txt'
+
+# Author
+author     : "Keith Hughitt <khughitt@umd.edu>"
+maintainer : "Keith Hughitt <khughitt@umd.edu>"
+
+# EuPathDB version
+db_name    : 'ToxoDB'
+db_version : '27'
+db_url     : 'http://toxodb.org/toxo/'
+
+# Directories
+build_dir  : 'build'
+output_dir : 'output'
+

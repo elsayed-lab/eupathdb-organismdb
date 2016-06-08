@@ -1,0 +1,34 @@
+#
+# TriTrypDB OrganismDB package settings
+#
+
+# Organism
+genus       : 'Trypanosoma'
+species     : 'brucei'
+tax_id      : '185431'
+description : 'T. brucei strain TREU927'
+
+# Package names
+orgdb_name      : 'org.Tb927.tritryp.db'
+txdb_name       : 'TxDb.TbruceiTREU927.tritryp27.genes'
+organismdb_name : 'Trypanosoma.brucei.TREU927'
+
+# Annotation file sources
+# If not specified, or files do not exists, will attempt to download
+gff     : '/cbcb/lab/nelsayed/ref_data/tbrucei_treu927/annotation/TriTrypDB-27_TbruceiTREU927.gff'
+txt     : '/cbcb/lab/nelsayed/ref_data/tbrucei_treu927/annotation/TriTrypDB-27_TbruceiTREU927Gene.txt.gz'
+aliases : '/cbcb/lab/nelsayed/ref_data/tbrucei_treu927/annotation/TriTrypDB-27_TbruceiTREU927_GeneAliases.txt'
+
+# Author
+author     : "Keith Hughitt <khughitt@umd.edu>"
+maintainer : "Keith Hughitt <khughitt@umd.edu>"
+
+# EuPathDB version
+db_name    : 'TriTrypDB'
+db_version : '27'
+db_url     : 'http://tritrypdb.org/tritrypdb/'
+
+# Directories
+build_dir  : 'build'
+output_dir : 'output'
+
