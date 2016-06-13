@@ -55,15 +55,50 @@ genes <- gff[gff$type == 'gene']
 gene_file <- sprintf("%s_gene_info.txt", build_basename)
 
 if (file.exists(gene_file)) {
+    message(paste0("Reading pre-existing gene file: ", gene_file))
     gene_info <- read.delim(gene_file)
 } else {
-    print("Parsing gene information...")
-    gene_info <- as.data.frame(elementMetadata(genes[,c('ID', 'description')]))
-
+    message(paste0("Parsing gene information from: ", settings$gff))
+    ##    gene_info <- as.data.frame(elementMetadata(genes[,c('ID', 'description')]))
+    gene_info <- as.data.frame(elementMetadata(genes))
     # Convert form-encoded description string to human-readable
     gene_info$description <- gsub("\\+", " ", gene_info$description)
-    colnames(gene_info) <- c("GID", "GENENAME")
+    colnames(gene_info) <- toupper(colnames(gene_info))
+    colnames(gene_info)[colnames(gene_info) == "ID"] <- "GID"
+    gid_index <- grep("GID", colnames(gene_info))
+    ## Move gid to the front of the line.
+    gene_info <- gene_info[, c(gid_index, (1:ncol(gene_info))[-gid_index])]
+    colnames(gene_info) <- paste0("GENE", colnames(gene_info))
+    colnames(gene_info)[1] <- "GID"
 
+    num_rows <- nrow(gene_info)
+    gene_info[["GENEALIAS"]] <- as.character(gene_info[["GENEALIAS"]])
+    ## Get rid of character(0) crap and NAs
+    is.empty <- function(stuff) {
+        (length(stuff) == 0) && (typeof(stuff) == "character")
+    }
+    is.empty.col <- function(x) {
+        y <- if (length(x)) {
+                 do.call("cbind", lapply(x, "is.empty"))
+             } else {
+                 matrix(FALSE, length(row.names(x)), 0)
+             }
+        if (.row_names_info(x) > 0L) {
+            rownames(y) <- row.names(x)
+        }
+        y
+    }
+    for (col in colnames(gene_info)) {
+        tmp_col <- gene_info[[col]]
+        empty_index <- is.empty.col(tmp_col)
+        tmp_col[empty_index] <- NA
+        gene_info[[col]] <- tmp_col
+        if (sum(!is.na(gene_info[[col]])) == num_rows) {
+            gene_info[, !(colnames(gene_info) %in% col)]
+        }
+        gene_info[[col]] <- as.character(gene_info[[col]])
+    }
+    gene_info[is.na(gene_info)] <- "null"
     write.table(gene_info, gene_file, sep='\t', quote=FALSE, row.names=FALSE)
 }
 
@@ -75,7 +110,7 @@ chr_file <- sprintf("%s_chr_info.txt", build_basename)
 if (file.exists(chr_file)) {
     chr_info <- read.delim(chr_file)
 } else {
-    print("Parsing chromosome information...")
+    message(paste0("Parsing chromosome information from ", chr_file))
     chr_info <- data.frame(
         'GID' = genes$ID,
         'CHR' = as.character(seqnames(genes))
@@ -91,7 +126,7 @@ gene_type_file <- sprintf("%s_gene_type.txt", build_basename)
 if (file.exists(gene_type_file)) {
     gene_types <- read.delim(gene_type_file)
 } else {
-    print("Parsing gene types...")
+    message(paste0("Parsing gene types from ", settings$txt))
     gene_types <- parse_gene_types(settings$txt)
     write.table(gene_types, gene_type_file, sep='\t', quote=FALSE, row.names=FALSE)
 }
@@ -122,7 +157,7 @@ if (file.exists(go_file)) {
             synonym_mapping <- rbind(synonym_mapping, c(syn, GOSYNONYM[[syn]]@GOID))
         }
     }
-    
+
     # replace alternative GO term identifiers
     if (nrow(synonym_mapping) > 0) {
         colnames(synonym_mapping) <- c('synonym', 'primary')
@@ -157,12 +192,12 @@ convert_kegg_gene_ids <- function(kegg_ids, kegg_id_mapping) {
             result <- append(result, gsub('tgo:', '', gsub('_', '.', kegg_id)))
         } else if (substring(kegg_id, 1, 9) == 'lbz:LBRM_') {
             # L. braziliensis (lbz:LBRM_01_0080)
-            result <- append(result, gsub('LBRM', 'LbrM', 
+            result <- append(result, gsub('LBRM', 'LbrM',
                      gsub("_", "\\.", substring(kegg_id, 5))))
         } else if (substring(kegg_id, 1, 9) == 'lma:LMJF_') {
             # L. major (lma:LMJF_11_0100)
-            result <- append(result, 
-                gsub('LMJF', 'LmjF', 
+            result <- append(result,
+                gsub('LMJF', 'LmjF',
                      gsub("_", "\\.", substring(kegg_id, 5))))
         } else if (substring(kegg_id, 1, 8) == 'lma:LMJF') {
             # L. major (lma:LMJF10_TRNALYS_01)
@@ -183,7 +218,7 @@ if (!file.exists(kegg_mapping_file)) {
     library(KEGGREST)
 
     # KEGG Organism abbreviation (e.g. "lma")
-    org_abbreviation <- paste0(tolower(substring(settings$genus, 1, 1)), 
+    org_abbreviation <- paste0(tolower(substring(settings$genus, 1, 1)),
                               substring(settings$species, 1, 2))
 
     # Overides for cases where KEGG abbreviation differes from the above
@@ -224,7 +259,7 @@ if (!file.exists(kegg_mapping_file)) {
                 kegg_id_mapping[old_id] <- row[1]
             }
         }
-    
+
     } else if (org_abbreviation == 'lma') {
         # L. major
         #
@@ -247,7 +282,7 @@ if (!file.exists(kegg_mapping_file)) {
 
         # Example: "tcr:509463.30" -> ""
         ##convert_kegg_gene_ids <- function(kegg_ids) {
-        ##    kegg_to_genedb(kegg_ids, kegg_id_mapping)   
+        ##    kegg_to_genedb(kegg_ids, kegg_id_mapping)
         ##}
     }
 
@@ -265,12 +300,12 @@ if (!file.exists(kegg_mapping_file)) {
         meta <- keggGet(pathway)[[1]]
         pathway_desc  <- ifelse(is.null(meta$DESCRIPTION), '', meta$DESCRIPTION)
         pathway_class <- ifelse(is.null(meta$CLASS), '', meta$CLASS)
-        kegg_pathways <- rbind(kegg_pathways, 
+        kegg_pathways <- rbind(kegg_pathways,
                                data.frame(pathway=pathway,
                                          name=meta$PATHWAY_MAP,
                                          class=pathway_class,
                                          description=pathway_desc))
-        
+
         # Get genes in pathway
         kegg_ids <- as.character(keggLink(org_abbreviation, pathway))
         gene_ids <- convert_kegg_gene_ids(kegg_ids)
@@ -282,9 +317,9 @@ if (!file.exists(kegg_mapping_file)) {
 
             for (x in old_gene_ids) {
                 if (x %in% names(kegg_id_mapping)) {
-                    gene_ids <- append(gene_ids, kegg_id_mapping[[x]])              
+                    gene_ids <- append(gene_ids, kegg_id_mapping[[x]])
                 } else {
-                    gene_ids <- append(gene_ids, x)              
+                    gene_ids <- append(gene_ids, x)
                 }
             }
         }
@@ -319,7 +354,6 @@ kegg_table <- kegg_table[,c(2, 1, 3, 4, 5)]
 # R package versions must be of the form "x.y"
 db_version <- paste(settings$db_version, '0', sep='.')
 
-# Generate package
 makeOrgPackage(
     gene_info  = gene_info,
     chromosome = chr_info,
@@ -335,4 +369,3 @@ makeOrgPackage(
     species    = settings$species,
     goTable    = "go"
 )
-

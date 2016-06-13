@@ -28,7 +28,7 @@ if (length(args) > 0) {
 # MAIN
 #
 # Load settings
-settings = yaml.load_file('config.yaml')
+settings = yaml.load_file(config_file)
 
 build_dir = file.path(settings$build_dir,
                       paste0(R.Version()$major,  '.', R.Version()$minor))

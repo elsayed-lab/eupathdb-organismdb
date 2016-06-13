@@ -26,7 +26,6 @@ function parse_yaml {
 }
 
 config_file=${1-"config.yaml"}
-echo "TESTME: ${config_file}"
 # load configuration
 eval $(parse_yaml ${config_file})
 
