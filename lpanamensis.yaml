@@ -1,0 +1,36 @@
+#
+# TriTrypDB OrganismDB package settings
+#
+
+# Organism
+genus       : 'Leishmania'
+species     : 'panamensis'
+tax_id      : '1295824'
+description : 'L. panamensis MHOM/COL/81/L13'
+
+# Package names
+orgdb_name      : 'org.Lpan.tritryp.db'
+txdb_name       : 'TxDb.LpanamensisMHOMCOL81L13.tritryp26.genes'
+organismdb_name : 'Leishmania.panamensis.MHOMCOL81L13'
+
+# Annotation file sources
+# If not specified, or files do not exists, will attempt to download
+gff     : '/cbcb/lab/nelsayed/ref_data/lpanamensis/annotation/TriTrypDB-26_LpanamensisMHOMCOL81L13.gff'
+txt     : '/cbcb/lab/nelsayed/ref_data/lpanamensis/annotation/TriTrypDB-26_LpanamensisMHOMCOL81L13Gene.txt.gz'
+aliases : '/cbcb/lab/nelsayed/ref_data/lpanamensis/annotation/TriTrypDB-26_LpanamensisMHOMCOL81L13_GeneAliases.txt'
+
+# GFF feature type to include in TxDb
+gff_txname : 'gene'
+
+# Author
+author     : "Keith Hughitt <khughitt@umd.edu>"
+maintainer : "Keith Hughitt <khughitt@umd.edu>"
+
+# EuPathDB version
+db_name    : 'TriTrypDB'
+db_version : '26'
+db_url     : 'http://tritrypdb.org/tritrypdb/'
+
+# Directories
+build_dir  : 'build'
+output_dir : 'output'
