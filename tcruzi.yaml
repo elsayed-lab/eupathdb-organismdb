@@ -1,0 +1,34 @@
+#
+# TriTrypDB OrganismDB package settings
+#
+
+# Organism
+genus       : 'Trypanosoma'
+species     : 'cruzi'
+tax_id      : '353153'
+description : 'T. cruzi strain CL Brener all haplotypes'
+
+# Package names
+orgdb_name      : 'org.TcCLB.tritryp.db'
+txdb_name       : 'TxDb.TcruziCLBrener.tritryp27.genes'
+organismdb_name : 'Trypanosoma.cruzi.CLBrener'
+
+# Annotation file sources
+# If not specified, or files do not exists, will attempt to download
+gff     : '/cbcb/lab/nelsayed/ref_data/tcruzi_clbrener/annotation/TriTrypDB-27_TcruziCLBrener.gff'
+txt     : '/cbcb/lab/nelsayed/ref_data/tcruzi_clbrener/annotation/TriTrypDB-27_TcruziCLBrenerGene.txt.gz'
+aliases : '/cbcb/lab/nelsayed/ref_data/tcruzi_clbrener/annotation/TriTrypDB-27_TcruziCLBrener_GeneAliases.txt'
+
+# Author
+author     : "Keith Hughitt <khughitt@umd.edu>"
+maintainer : "Keith Hughitt <khughitt@umd.edu>"
+
+# EuPathDB version
+db_name    : 'TriTrypDB'
+db_version : '27'
+db_url     : 'http://tritrypdb.org/tritrypdb/'
+
+# Directories
+build_dir  : 'build'
+output_dir : 'output'
+

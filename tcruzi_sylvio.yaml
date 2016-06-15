@@ -1,0 +1,37 @@
+#
+# TriTrypDB OrganismDB package settings
+#
+
+# Organism
+genus       : 'Trypanosoma'
+species     : 'cruzi'
+tax_id      : '5693'
+description : 'Trypanosoma cruzi Sylvio X10/1'
+
+# Package names
+orgdb_name      : 'org.TcSylvio.tritryp.db'
+txdb_name       : 'TxDb.TcruziSylvio.tritryp27.genes'
+organismdb_name : 'Trypanosoma.cruzi.Sylvio.X10.1'
+
+# Annotation file sources
+# If not specified, or files do not exists, will attempt to download
+gff     : '/cbcb/lab/nelsayed/ref_data/tcruzi_sylvio/annotation/TriTrypDB-8.0_TcruziSylvioX10-1.gff'
+txt     : '/cbcb/lab/nelsayed/ref_data/tcruzi_sylvio/annotation/TriTrypDB-27_TcruziSylvioX10-1Gene.txt.gz'
+aliases : '/cbcb/lab/nelsayed/ref_data/tcruzi_sylvio/annotation/TriTrypDB-27_TcruziSylvioX10-1_GeneAliases.txt'
+
+# GFF feature type to include in TxDb
+gff_txname : 'gene'
+
+# Author
+author     : "Keith Hughitt <khughitt@umd.edu>"
+maintainer : "Keith Hughitt <khughitt@umd.edu>"
+
+# EuPathDB version
+db_name    : 'TriTrypDB'
+db_version : '27'
+db_url     : 'http://tritrypdb.org/tritrypdb/'
+
+# Directories
+build_dir  : 'build'
+output_dir : 'output'
+
