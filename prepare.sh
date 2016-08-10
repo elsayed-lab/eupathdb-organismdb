@@ -12,7 +12,7 @@
 # https://github.com/genome-vendor/r-bioc-annotationdbi/tree/master/inst/DBschemas
 
 # YAML parser
-# http://stackoverflow.com/questions/5014632/how-can-i-parse-a-yaml-file-from-a-linux-shell-script 
+# http://stackoverflow.com/questions/5014632/how-can-i-parse-a-yaml-file-from-a-linux-shell-script
 function parse_yaml {
    local prefix=$2
    local s='[[:space:]]*' w='[a-zA-Z0-9_]*' fs=$(echo @|tr @ '\034')
@@ -30,8 +30,9 @@ function parse_yaml {
    }'
 }
 
+config_file=${1-"config.yaml"}
 # load configuration
-eval $(parse_yaml config.yaml)
+eval $(parse_yaml ${config_file})
 
 # current directory
 cwd=$(pwd)
@@ -72,7 +73,7 @@ chmod -w $dbpath
 # Fix manual pages
 for suffix in "BASE.Rd" "ORGANISM.Rd" "_dbconn.Rd"; do
     mv man/${orgdb_name_short_old}${suffix} man/${orgdb_name_short}${suffix}
-    sed -i "s/$orgdb_name_short_old/$orgdb_name_short/g" man/${orgdb_name_short}${suffix} 
+    sed -i "s/$orgdb_name_short_old/$orgdb_name_short/g" man/${orgdb_name_short}${suffix}
 done
 
 # Fix zzz.R
@@ -81,7 +82,7 @@ sed -i "s/$orgdb_name_short_old/$orgdb_name_short/g" R/zzz.R
 #
 # Generate OrgDb README.md
 #
-cat << EOF > README.md
+cat << EOF > "${cwd}/output/${orfdb_name}/README.md"
 # $orgdb_name
 
 Genome-wide annotation package for *$description*, based on
@@ -121,23 +122,23 @@ columns($orgdb_name)
 gene_ids = head(keys($orgdb_name), 10)
 
 # gene names and descriptions
-annotations = AnnotationDbi::select($orgdb_name, 
-                                    keys=gene_ids, 
-                                    keytype='GID', 
+annotations = AnnotationDbi::select($orgdb_name,
+                                    keys=gene_ids,
+                                    keytype='GID',
                                     columns=c('CHROMOSOME', 'GENENAME'))
 head(annotations)
 
 # GO terms
-go_terms = AnnotationDbi::select($orgdb_name, 
-                                 keys=gene_ids, 
-                                 keytype='GID', 
+go_terms = AnnotationDbi::select($orgdb_name,
+                                 keys=gene_ids,
+                                 keytype='GID',
                                  columns=c('GO', 'ONTOLOGYALL'))
 head(go_terms)
 
 # KEGG pathways
 kegg_paths = AnnotationDbi::select($orgdb_name,
-                                   keys=gene_ids, 
-                                   keytype='GID', 
+                                   keys=gene_ids,
+                                   keytype='GID',
                                    columns=c('KEGG_NAME', 'KEGG_PATH'))
 head(kegg_paths)
 \`\`\`
@@ -180,7 +181,7 @@ sed -i "s/$txdb_name_old/$txdb_name/g" man/package.Rd
 #
 # Generate TxDb README.md
 #
-cat << EOF > README.md
+cat << EOF > "${cwd}/output/${txdb_name}/README.md"
 # $txdb_name
 
 Transcript annotation package for *$description*, based on
@@ -220,9 +221,9 @@ columns($txdb_name)
 gene_ids = head(keys($txdb_name), 10)
 
 # gene coordinates and strand
-genes = AnnotationDbi::select($txdb_name, 
-                              keys=gene_ids, 
-                              keytype='GENEID', 
+genes = AnnotationDbi::select($txdb_name,
+                              keys=gene_ids,
+                              keytype='GENEID',
                               columns=c('TXSTART', 'TXEND', 'TXSTRAND'))
 
 head(genes)
@@ -242,7 +243,7 @@ EOF
 echo "Installing databases"
 cd $cwd
 
-R CMD INSTALL $output_dir/$orgdb_name
-R CMD INSTALL $output_dir/$txdb_name
+R CMD INSTALL ${output_dir}/${orgdb_name}
+R CMD INSTALL ${output_dir}/${txdb_name}
 
 echo "Done!"

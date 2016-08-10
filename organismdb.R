@@ -24,27 +24,27 @@ if (length(args) > 0) {
     message("Defaulting to the configuration in 'config.yaml'.")
 }
 
-#
-# MAIN
-#
-# Load settings
+##
+## MAIN
+##
+## Load settings
 settings = yaml.load_file(config_file)
 
 build_dir = file.path(settings$build_dir,
                       paste0(R.Version()$major,  '.', R.Version()$minor))
 
-# Create build directory
+## Create build directory
 if (!file.exists(build_dir)) {
     dir.create(build_dir)
 }
 build_basename = file.path(build_dir,
                             sub('.gff', '', basename(settings$gff)))
 
-# Load organism-specific packages
+## Load organism-specific packages
 library(settings$orgdb_name, character.only=TRUE)
 library(settings$txdb_name,  character.only=TRUE)
 
-# mapping
+## mapping
 graph_data = list(
     join1=c(GO.db='GOID', orgdb='GO'),
     join2=c(orgdb='GID',  txdb='GENEID')

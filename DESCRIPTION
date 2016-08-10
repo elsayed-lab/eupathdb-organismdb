@@ -1,0 +1,17 @@
+Package: eupathdb-organismdb
+Type: Package
+Title:  Make annotation packages for species at the TriTrypDB/EuPathDB.
+Version: 2016.08
+Date: 2016-08-01
+Author: Keith Hughitt
+Authors@R: c(person("Keith", "Hughitt", email="khughitt@umd.edu", role=c("aut","cre")),
+             person("Ashton", "Belew", email="abelew@gmail.com", role=c("aut","cre")))
+Maintainer: Ashton Trey Belew <abelew@gmail.com>
+Description: Reading annotation information from gff files is dumb.  This should help.
+License: GPL-2 | file LICENSE
+Suggests:
+    AnnotationDbi, AnnotationHub, biomaRt, GenomicFeatures, GenomicRanges, Category, KEGGREST, GO.db
+Imports:
+    knitr, magrittr, methods
+VignetteBuilder: knitr
+RoxygenNote: 5.0.1
